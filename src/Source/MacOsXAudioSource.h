@@ -14,7 +14,8 @@
 #include "Domain/Settings.h"
 
 #ifdef _OS_OSX
-// TODO: put mac os x specific headers here
+#include <thread>
+#include <CoreAudio/CoreAudio.h>
 #endif
 
 namespace vis
@@ -32,9 +33,47 @@ class MacOsXAudioSource : public vis::AudioSource
      */
     bool read(pcm_stereo_sample *buffer, uint32_t buffer_size) override;
 
+#ifdef _OS_OSX
+    AudioDeviceID get_default_input_device();
+
+    void print_device_info(const AudioDeviceID id);
+
+    void print_stream_info(AudioDeviceID device_id);
+#endif
+
   private:
 #ifdef _OS_OSX
-// TODO: put mac os x specific features here
+
+#define CORE_AUDIO_OSX_CHANNEL 0
+
+    struct VisCoreAudioData
+    {
+        int sample;
+        int freq;
+        AudioStreamBasicDescription description;
+    };
+
+    AudioDeviceID m_device_id;
+
+    AudioDeviceIOProcID m_proc_id;
+
+    std::thread m_run_loop_thread;
+
+    std::vector<float *> m_buffers;
+
+    const vis::Settings * const m_settings;
+
+    bool start_core_audio();
+
+    static OSStatus core_audio_handle(AudioDeviceID inDevice,
+                               const AudioTimeStamp *inNow,
+                               const AudioBufferList *inInputData,
+                               const AudioTimeStamp *inInputTime,
+                               AudioBufferList *outOutputData,
+                               const AudioTimeStamp *inOutputTime,
+                               void *inClientData);
+
+    static void start_run_loop();
 #endif
 };
 }

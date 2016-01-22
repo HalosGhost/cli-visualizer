@@ -97,7 +97,7 @@ PERF_TEST_INCLUDE_PATH = -I/usr/include
 LIB_PATH = -L/usr/local/lib
 
 # Libs
-LIBS = -lfftw3 -lm -lstdc++
+LIBS = -lfftw3 -lm -lstdc++ -framework CoreServices -framework CoreAudio
 TEST_LIBS = -lgtest -lpthread
 PERF_TEST_LIBS = -lbenchmark -lpthread
 
