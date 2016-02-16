@@ -17,15 +17,12 @@ vis::NcursesWriter::NcursesWriter(const vis::Settings *const settings)
     curs_set(0); // sets the cursor to invisible
     setlocale(LC_ALL, "");
 
-    if (has_colors() == TRUE)
-    {
-        start_color();        // turns on color
-        use_default_colors(); // uses default colors of terminal, which allows
-                              // transparency to work
+    start_color();        // turns on color
+    use_default_colors(); // uses default colors of terminal, which allows
+                          // transparency to work
 
-        // initialize color pairs
-        setup_colors();
-    }
+    // initialize color pairs
+    setup_colors();
 }
 
 void vis::NcursesWriter::setup_colors()
