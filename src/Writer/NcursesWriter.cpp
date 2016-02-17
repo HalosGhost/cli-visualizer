@@ -28,14 +28,14 @@ vis::NcursesWriter::NcursesWriter(const vis::Settings *const settings)
 void vis::NcursesWriter::setup_colors()
 {
     // initialize colors
-    for (int16_t i = 0; i < COLORS; ++i)
+    for (int16_t i = 0; i < 256; ++i)
     {
         init_pair(i, i, -1);
 
         // initialize colors as background, this is used in write_background to
         // create a
         // full block effect without using a custom font
-        init_pair(static_cast<int16_t>(i + COLORS), i, i);
+        init_pair(static_cast<int16_t>(i + 256), i, i);
     }
 }
 
@@ -45,7 +45,7 @@ void vis::NcursesWriter::write_background(int32_t height, int32_t width,
 {
     // Add COLORS which will set it to have the color as the background, see
     // "setup_colors"
-    auto color_pair = COLOR_PAIR(color + COLORS);
+    auto color_pair = COLOR_PAIR(color + 256);
     attron(color_pair);
 
     mvaddwstr(height, width, msg.c_str());
